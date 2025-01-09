@@ -45,7 +45,7 @@ public class Wallet {
         return dogecoinBalance;
     }
 
-    public void setDogecoinBalance() {
+    public void setDogecoinBalance(double v) {
         this.dogecoinBalance = dogecoinBalance;
     }
 

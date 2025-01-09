@@ -22,7 +22,7 @@ public class UserService {
 
     public User saveUser(User user) {
         Wallet wallet = new Wallet();
-        wallet.setDogecoinBalance();
+        wallet.setDogecoinBalance(wallet.getDogecoinBalance() + amount);
         wallet.setUsdBalance(0.0);
         wallet.setBitcoinBalance(0.0);
         walletRepository.save(wallet);
