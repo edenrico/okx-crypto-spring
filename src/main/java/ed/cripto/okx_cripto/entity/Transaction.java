@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-public class Transacao {
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,10 +30,10 @@ public class Transacao {
     private CriptoCurrency criptoCurrency;
 
     // Construtor vazio
-    public Transacao() {}
+    public Transaction() {}
 
     // Construtor com parâmetros
-    public Transacao(UUID transacaoId, String tipo, Double quantidade, Double preco, Date timestamp, Wallet wallet, CriptoCurrency criptoCurrency) {
+    public Transaction(UUID transacaoId, String tipo, Double quantidade, Double preco, Date timestamp, Wallet wallet, CriptoCurrency criptoCurrency) {
         this.transacaoId = transacaoId;
         this.tipo = tipo;
         this.quantidade = quantidade;
