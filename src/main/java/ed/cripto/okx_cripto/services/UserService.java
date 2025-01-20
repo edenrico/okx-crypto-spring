@@ -31,6 +31,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
@@ -45,5 +47,9 @@ public class UserService {
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
+    }
+
+    public User findByEmail(String email) {
+        return null;
     }
 }

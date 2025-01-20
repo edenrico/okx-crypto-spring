@@ -1,60 +1,43 @@
 package ed.cripto.okx_cripto.entity;
 
 import jakarta.persistence.*;
-
 import java.util.UUID;
 
-
 @Entity
-@Table(name = "db_user")
+@Table(name = "user")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(columnDefinition = "VARCHAR(36)")
-    private UUID userId;
+    private UUID id;
 
-    @Column(name = "nome")
-    private String nome;
+    @Column(nullable = false)
+    private String name;
 
-    @Column(name = "email")
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "senha")
-    private String senha;
+    @Column(nullable = false)
+    private String password;
 
     @OneToOne
-    @JoinColumn(name = "keyId", referencedColumnName = "keyId")
+    @JoinColumn(name = "wallet_id", referencedColumnName = "keyId")
     private Wallet wallet;
 
-    public User() {
-        // Construtor vazio
-    }
-
-    public User(UUID userId, String nome, String email, String senha, Wallet wallet) {
-        this.userId = userId;
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.wallet = wallet;
-    }
-
     // Getters e Setters
-
-    public UUID getUserId() {
-        return userId;
+    public UUID getId() {
+        return id;
     }
 
-    public void setUserId(UUID userId) {
-        this.userId = userId;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -65,12 +48,12 @@ public class User {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getPassword() {
+        return password;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Wallet getWallet() {
@@ -81,3 +64,4 @@ public class User {
         this.wallet = wallet;
     }
 }
+

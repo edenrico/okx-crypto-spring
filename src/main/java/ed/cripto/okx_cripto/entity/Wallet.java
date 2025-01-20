@@ -1,15 +1,15 @@
 package ed.cripto.okx_cripto.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+import ed.cripto.okx_cripto.entity.User;
 
 import java.util.UUID;
 
 @Entity
+@Table(name = "wallet")
 public class Wallet {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID keyId;
 
     private Double bitcoinBalance;
@@ -19,12 +19,7 @@ public class Wallet {
     @OneToOne(mappedBy = "wallet")
     private User user;
 
-    //@OneToMany(mappedBy = "wallet")
-    //private List<Transaction> transactions;
-
     // Getters e Setters
-
-
     public UUID getKeyId() {
         return keyId;
     }
@@ -45,7 +40,7 @@ public class Wallet {
         return dogecoinBalance;
     }
 
-    public void setDogecoinBalance(double v) {
+    public void setDogecoinBalance(Double dogecoinBalance) {
         this.dogecoinBalance = dogecoinBalance;
     }
 
