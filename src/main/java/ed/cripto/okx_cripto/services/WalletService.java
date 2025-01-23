@@ -2,8 +2,6 @@ package ed.cripto.okx_cripto.services;
 
 import java.util.List;
 import java.util.UUID;
-
-import jakarta.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,14 +15,14 @@ public class WalletService {
     @Autowired
     private WalletRepository walletRepository;
 
-    public Wallet getBalance(UUID userId) {
-        return walletRepository.findById(userId).orElse(null);
+    public Wallet getBalance(UUID walletId) {
+        return walletRepository.findById(walletId).orElse(null);
     }
 
-    public Wallet addFunds(UUID userId, double amount, String currency) {
-        Wallet wallet = walletRepository.findById(userId).orElse(null);
+    public Wallet addFunds(UUID walletId, double amount, String currency) {
+        Wallet wallet = walletRepository.findById(walletId).orElse(null);
         if (wallet != null) {
-            // Adicionar lógica para atualizar o saldo da carteira com a moeda específica
+            // Atualiza saldo com base na moeda especificada
             switch (currency) {
                 case "USD":
                     wallet.setUsdBalance(wallet.getUsdBalance() + amount);
@@ -41,11 +39,11 @@ public class WalletService {
         return wallet;
     }
 
-    public boolean transferFunds(UUID fromUserId, UUID toUserId, double amount, String currency) {
-        Wallet fromWallet = walletRepository.findById(fromUserId).orElse(null);
-        Wallet toWallet = walletRepository.findById(toUserId).orElse(null);
+    public boolean transferFunds(UUID fromWalletId, UUID toWalletId, double amount, String currency) {
+        Wallet fromWallet = walletRepository.findById(fromWalletId).orElse(null);
+        Wallet toWallet = walletRepository.findById(toWalletId).orElse(null);
         if (fromWallet != null && toWallet != null) {
-            // lógica para transferir fundos entre carteiras
+            // Lógica para transferir fundos entre carteiras
             switch (currency) {
                 case "USD":
                     fromWallet.setUsdBalance(fromWallet.getUsdBalance() - amount);
@@ -67,8 +65,9 @@ public class WalletService {
         return false;
     }
 
-    public List<Transaction> getTransactionHistory(UUID userId) {
-        // Adicionar lógica para recuperar o histórico de transações do usuário
-        return null; // Placeholder
+    public List<ed.cripto.okx_cripto.entity.Transaction> getTransactionHistory(UUID walletId) {
+        // Implemente a lógica para recuperar o histórico de transações
+        // Aqui pode ser um retorno do repository se você tiver configurado o relacionamento
+        return null; // Placeholder para exemplo
     }
 }
