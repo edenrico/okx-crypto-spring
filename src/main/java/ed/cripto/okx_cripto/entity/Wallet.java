@@ -1,5 +1,6 @@
 package ed.cripto.okx_cripto.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ed.cripto.okx_cripto.entity.User;
 
@@ -17,6 +18,7 @@ public class Wallet {
     private Double usdBalance;
 
     @OneToOne(mappedBy = "wallet")
+    @JsonIgnore
     private User user;
 
     // Getters e Setters

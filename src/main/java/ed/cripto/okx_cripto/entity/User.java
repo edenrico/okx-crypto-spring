@@ -1,5 +1,6 @@
 package ed.cripto.okx_cripto.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ public class User {
 
     @OneToOne
     @JoinColumn(name = "wallet_id", referencedColumnName = "keyId")
+    @JsonManagedReference
     private Wallet wallet;
 
     // Getters e Setters
