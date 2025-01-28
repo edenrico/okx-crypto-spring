@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import ed.cripto.okx_cripto.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
-
 @Entity
 @Table(name = "wallet")
 public class Wallet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID keyId;
@@ -21,7 +23,9 @@ public class Wallet {
     @JsonIgnore
     private User user;
 
-    // Getters e Setters
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CriptoCurrency> criptosCompradas = new ArrayList<>();
+
     public UUID getKeyId() {
         return keyId;
     }
@@ -60,5 +64,14 @@ public class Wallet {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<CriptoCurrency> getCriptosCompradas() {
+        return criptosCompradas;
+    }
+
+    public void addCripto(CriptoCurrency cripto, double quantidade) {
+        cripto.setPrecoAtual(cripto.getPrecoAtual() * quantidade);
+        this.criptosCompradas.add(cripto);
     }
 }

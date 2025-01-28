@@ -16,28 +16,36 @@ public class WalletController {
     @Autowired
     private WalletService walletService;
 
-    // Agora usando walletId no lugar de userId
+    // Obtém o saldo da carteira
     @GetMapping("/balance/{walletId}")
     public ResponseEntity<Wallet> getBalance(@PathVariable UUID walletId) {
         Wallet wallet = walletService.getBalance(walletId);
-        return ResponseEntity.ok(wallet);
+        return wallet != null ? ResponseEntity.ok(wallet) : ResponseEntity.notFound().build();
     }
 
+    // Adiciona fundos à carteira
     @PostMapping("/add-funds/{walletId}")
-    public ResponseEntity<Wallet> addFunds(@PathVariable UUID walletId, @RequestParam double amount, @RequestParam String currency) {
+    public ResponseEntity<Wallet> addFunds(
+            @PathVariable UUID walletId,
+            @RequestParam double amount,
+            @RequestParam String currency
+    ) {
         Wallet wallet = walletService.addFunds(walletId, amount, currency);
-        return ResponseEntity.ok(wallet);
+        return wallet != null ? ResponseEntity.ok(wallet) : ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("/transfer")
-    public ResponseEntity<Boolean> transferFunds(@RequestParam UUID fromWalletId, @RequestParam UUID toWalletId, @RequestParam double amount, @RequestParam String currency) {
-        boolean success = walletService.transferFunds(fromWalletId, toWalletId, amount, currency);
-        return ResponseEntity.ok(success);
-    }
-
-    @GetMapping("/transactions/{walletId}")
-    public ResponseEntity<List<ed.cripto.okx_cripto.entity.Transaction>> getTransactionHistory(@PathVariable UUID walletId) {
-        List<ed.cripto.okx_cripto.entity.Transaction> transactions = walletService.getTransactionHistory(walletId);
-        return ResponseEntity.ok(transactions);
+    // Compra criptomoedas
+    @PostMapping("/{walletId}/buy-crypto")
+    public ResponseEntity<Wallet> buyCripto(
+            @PathVariable UUID walletId,
+            @RequestParam String criptoNome,
+            @RequestParam double quantidade
+    ) {
+        try {
+            Wallet updatedWallet = walletService.buyCripto(walletId, criptoNome, quantidade);
+            return ResponseEntity.ok(updatedWallet);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 }
