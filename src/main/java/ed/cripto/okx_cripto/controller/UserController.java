@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.UUID;
 
 @RestController
@@ -16,16 +17,21 @@ public class UserController {
     private UserService userService;
 
     /**
-     * Cria um novo usuário.
-     * Endpoint: POST /api/users
-     * Exemplo de body (JSON):
-     * {
-     *   "name": "João",
-     *   "email": "joao@example.com",
-     *   "password": "123456"
-     * }
+     * Obtém o nome do usuário a partir do walletId.
+     * Endpoint: GET /api/users/wallet/{walletId}
      */
-    @PostMapping
+    @GetMapping("/wallet/{walletId}")
+    public ResponseEntity<?> getUserByWalletId(@PathVariable UUID walletId) {
+        User user = userService.findByWalletId(walletId);
+        if (user != null) {
+            return ResponseEntity.ok(Collections.singletonMap("nome", user.getName()));
+        } else {
+            return ResponseEntity.status(404).body("Usuário não encontrado");
+        }
+    }
+
+
+    @PostMapping(consumes = "application/json")
     public ResponseEntity<User> createUser(@RequestBody User user) {
         User createdUser = userService.saveUser(user);
         return ResponseEntity.ok(createdUser);
@@ -92,8 +98,11 @@ public class UserController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         User user = userService.findByEmail(loginRequest.getEmail());
         if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
-            // Retorna o walletId e uma mensagem de sucesso
-            LoginResponse response = new LoginResponse(user.getWallet().getKeyId(), "Login bem-sucedido!");
+            LoginResponse response = new LoginResponse(
+                    user.getWallet().getKeyId(),
+                    user.getName(), // 🔹 Aqui garantimos que o nome do usuário é retornado
+                    "Login bem-sucedido!"
+            );
             return ResponseEntity.ok(response);
         }
         return ResponseEntity.status(401).body("Credenciais inválidas.");
@@ -126,7 +135,7 @@ public class UserController {
         private UUID walletId;
         private String message;
 
-        public LoginResponse(UUID walletId, String message) {
+        public LoginResponse(UUID walletId, String message, String s) {
             this.walletId = walletId;
             this.message = message;
         }

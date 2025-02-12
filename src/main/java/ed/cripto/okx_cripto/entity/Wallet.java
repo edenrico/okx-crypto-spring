@@ -1,12 +1,12 @@
 package ed.cripto.okx_cripto.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import ed.cripto.okx_cripto.entity.User;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
 @Entity
 @Table(name = "wallet")
 public class Wallet {
@@ -18,13 +18,16 @@ public class Wallet {
     private Double bitcoinBalance;
     private Double dogecoinBalance;
     private Double usdBalance;
+    private Double xrpBalance; // Novo campo para XRP
 
     @OneToOne(mappedBy = "wallet")
-    @JsonIgnore
+    @JsonBackReference
     private User user;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CriptoCurrency> criptosCompradas = new ArrayList<>();
+
+    // Getters e Setters
 
     public UUID getKeyId() {
         return keyId;
@@ -58,6 +61,14 @@ public class Wallet {
         this.usdBalance = usdBalance;
     }
 
+    public Double getXrpBalance() {
+        return xrpBalance;
+    }
+
+    public void setXrpBalance(Double xrpBalance) {
+        this.xrpBalance = xrpBalance;
+    }
+
     public User getUser() {
         return user;
     }
@@ -70,6 +81,7 @@ public class Wallet {
         return criptosCompradas;
     }
 
+    // Método simples para adicionar ao histórico (a lógica pode ser aprimorada para consolidar compras)
     public void addCripto(CriptoCurrency cripto, double quantidade) {
         cripto.setPrecoAtual(cripto.getPrecoAtual() * quantidade);
         this.criptosCompradas.add(cripto);

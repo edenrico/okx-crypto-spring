@@ -53,4 +53,11 @@ public class UserService {
         // Chama o repositório. Se não encontrar, retorna null
         return userRepository.findByEmail(email).orElse(null);
     }
+
+    public User findByWalletId(UUID walletId) {
+        return userRepository.findByWallet_KeyId(walletId);
+    }
+
+
+
 }

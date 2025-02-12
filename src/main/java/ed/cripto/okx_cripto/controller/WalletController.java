@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -43,6 +42,21 @@ public class WalletController {
     ) {
         try {
             Wallet updatedWallet = walletService.buyCripto(walletId, criptoNome, quantidade);
+            return ResponseEntity.ok(updatedWallet);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
+    // Venda criptomoedas
+    @PostMapping("/{walletId}/sell-crypto")
+    public ResponseEntity<Wallet> sellCripto(
+            @PathVariable UUID walletId,
+            @RequestParam String criptoNome,
+            @RequestParam double quantidade
+    ) {
+        try {
+            Wallet updatedWallet = walletService.sellCripto(walletId, criptoNome, quantidade);
             return ResponseEntity.ok(updatedWallet);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
