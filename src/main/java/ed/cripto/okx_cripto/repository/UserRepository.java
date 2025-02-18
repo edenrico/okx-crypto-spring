@@ -10,5 +10,5 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     Optional<User> findByEmail(String email);
 
     User findByWallet_KeyId(UUID walletId);
-    // Métodos CRUD já estão disponíveis a partir de JpaRepository
+    
 }
