@@ -50,7 +50,7 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        // Chama o repositório. Se não encontrar, retorna null
+        
         return userRepository.findByEmail(email).orElse(null);
     }
 
