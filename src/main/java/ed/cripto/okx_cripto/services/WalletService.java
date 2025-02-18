@@ -21,12 +21,12 @@ public class WalletService {
     @Autowired
     private CoinGeckoService coinGeckoService;
 
-    // Retorna o saldo da carteira
+    
     public Wallet getBalance(UUID walletId) {
         return walletRepository.findById(walletId).orElse(null);
     }
 
-    // Adiciona fundos à carteira
+  
     public Wallet addFunds(UUID walletId, double amount, String currency) {
         Wallet wallet = walletRepository.findById(walletId).orElse(null);
         if (wallet != null) {
@@ -38,12 +38,12 @@ public class WalletService {
         return wallet;
     }
 
-    // Compra criptomoedas
+    
     public Wallet buyCripto(UUID walletId, String criptoNome, double quantidade) {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new IllegalArgumentException("Carteira não encontrada"));
 
-        // Obtém os preços das criptomoedas
+      
         List<CriptoCurrency> livePrices = coinGeckoService.getLivePrices();
         CriptoCurrency criptoAtual = livePrices.stream()
                 .filter(cripto -> cripto.getNome().equalsIgnoreCase(criptoNome))
@@ -53,12 +53,12 @@ public class WalletService {
         double precoAtual = criptoAtual.getPrecoAtual();
         double custoTotal = precoAtual * quantidade;
 
-        // Verifica se o saldo em USD é suficiente
+       
         if (wallet.getUsdBalance() < custoTotal) {
             throw new IllegalArgumentException("Saldo insuficiente");
         }
 
-        // Deduz o valor total do saldo em USD
+       
         wallet.setUsdBalance(wallet.getUsdBalance() - custoTotal);
 
         if ("Bitcoin".equalsIgnoreCase(criptoNome)) {
@@ -72,18 +72,18 @@ public class WalletService {
             wallet.setXrpBalance(saldoXrp + quantidade);
         }
 
-        // Mantém o histórico de compra na lista de criptosCompradas
+      
         CriptoCurrency criptoComprada = new CriptoCurrency(null, criptoNome, precoAtual);
         wallet.addCripto(criptoComprada, quantidade);
 
         return walletRepository.save(wallet);
     }
-    // Venda criptomoedas
+  
     public Wallet sellCripto(UUID walletId, String criptoNome, double quantidade) {
         Wallet wallet = walletRepository.findById(walletId)
                 .orElseThrow(() -> new IllegalArgumentException("Carteira não encontrada"));
 
-        // Obtém os preços das criptomoedas
+ 
         List<CriptoCurrency> livePrices = coinGeckoService.getLivePrices();
         CriptoCurrency criptoAtual = livePrices.stream()
                 .filter(cripto -> cripto.getNome().equalsIgnoreCase(criptoNome))
@@ -92,7 +92,7 @@ public class WalletService {
         double precoAtual = criptoAtual.getPrecoAtual();
         double valorVenda = precoAtual * quantidade;
 
-        // Verifica se a carteira possui quantidade suficiente para vender
+   
         if ("Bitcoin".equalsIgnoreCase(criptoNome)) {
             double saldoAtual = wallet.getBitcoinBalance() == null ? 0.0 : wallet.getBitcoinBalance();
             if (saldoAtual < quantidade) {
@@ -107,16 +107,15 @@ public class WalletService {
             }
             wallet.setDogecoinBalance(saldoAtual - quantidade);
         }
-        // Caso deseje implementar venda para outras criptomoedas, adicione a lógica correspondente
+            
+       // TESTE PARA XRP
         else if ("XRP".equalsIgnoreCase(criptoNome)) {
-            // Exemplo: se você tiver um campo específico ou gerenciar via lista de criptosCompradas
             throw new IllegalArgumentException("Venda de XRP não implementada");
         }
         else {
             throw new IllegalArgumentException("Criptomoeda não suportada para venda");
         }
 
-        // Acrescenta o valor da venda ao saldo em USD
         wallet.setUsdBalance(wallet.getUsdBalance() + valorVenda);
 
         return walletRepository.save(wallet);
