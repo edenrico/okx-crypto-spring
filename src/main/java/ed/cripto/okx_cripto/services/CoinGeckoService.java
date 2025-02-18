@@ -16,10 +16,10 @@ public class CoinGeckoService {
 
     private static final String COINGECKO_URL = "https://api.coingecko.com/api/v3/simple/price";
 
-    // Retorna preços ao vivo para Bitcoin, Dogecoin e Ripple
+    
     public List<CriptoCurrency> getLivePrices() {
         RestTemplate restTemplate = new RestTemplate();
-        // Atualizamos os IDs para incluir apenas bitcoin, dogecoin e ripple (o CoinGecko usa "ripple" para XRP)
+       // LEMBRAR DE ATUALIZAR XRP PARA RIPPLE! MUDANÇA RECENTE
         String ids = "bitcoin,dogecoin,ripple";
         String vsCurrencies = "usd";
         String url = COINGECKO_URL + "?ids=" + ids + "&vs_currencies=" + vsCurrencies;
@@ -35,7 +35,7 @@ public class CoinGeckoService {
         if (response.getBody() != null) {
             for (Map.Entry<String, Map<String, Double>> entry : response.getBody().entrySet()) {
                 CriptoCurrency cripto = new CriptoCurrency();
-                // Se o id for "ripple", definimos o nome como "XRP"
+               
                 String coinId = entry.getKey();
                 if ("ripple".equalsIgnoreCase(coinId)) {
                     cripto.setNome("XRP");
