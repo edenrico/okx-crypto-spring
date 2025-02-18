@@ -18,7 +18,7 @@ public class Wallet {
     private Double bitcoinBalance;
     private Double dogecoinBalance;
     private Double usdBalance;
-    private Double xrpBalance; // Novo campo para XRP
+    private Double xrpBalance; 
 
     @OneToOne(mappedBy = "wallet")
     @JsonBackReference
@@ -27,7 +27,7 @@ public class Wallet {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CriptoCurrency> criptosCompradas = new ArrayList<>();
 
-    // Getters e Setters
+
 
     public UUID getKeyId() {
         return keyId;
@@ -81,7 +81,7 @@ public class Wallet {
         return criptosCompradas;
     }
 
-    // Método simples para adicionar ao histórico (a lógica pode ser aprimorada para consolidar compras)
+ 
     public void addCripto(CriptoCurrency cripto, double quantidade) {
         cripto.setPrecoAtual(cripto.getPrecoAtual() * quantidade);
         this.criptosCompradas.add(cripto);
