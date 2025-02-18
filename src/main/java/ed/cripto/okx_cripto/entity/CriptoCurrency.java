@@ -15,20 +15,20 @@ public class CriptoCurrency {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID idCripto;
 
-    private String nome; // Nome da criptomoeda (Bitcoin, Dogecoin, etc.)
-    private Double precoAtual; // Preço atual da criptomoeda
+    private String nome; 
+    private Double precoAtual; 
 
-    // Construtor vazio
+  
     public CriptoCurrency() {}
 
-    // Construtor com parâmetros
+    
     public CriptoCurrency(UUID idCripto, String nome, Double precoAtual) {
         this.idCripto = idCripto;
         this.nome = nome;
         this.precoAtual = precoAtual;
     }
 
-    // Getters e Setters
+   
 
     public UUID getIdCripto() {
         return idCripto;
