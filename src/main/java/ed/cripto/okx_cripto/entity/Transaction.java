@@ -16,10 +16,10 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID transacaoId;
 
-    private String tipo; // "compra" ou "venda"
+    private String tipo; 
     private Double quantidade;
     private Double preco;
-    private Date timestamp; // Data e hora da transação
+    private Date timestamp; 
 
     @ManyToOne
     @JoinColumn(name = "keyId", referencedColumnName = "keyId")
@@ -29,10 +29,10 @@ public class Transaction {
     @JoinColumn(name = "idCripto", referencedColumnName = "idCripto")
     private CriptoCurrency criptoCurrency;
 
-    // Construtor vazio
+    
     public Transaction() {}
 
-    // Construtor com parâmetros
+   
     public Transaction(UUID transacaoId, String tipo, Double quantidade, Double preco, Date timestamp, Wallet wallet, CriptoCurrency criptoCurrency) {
         this.transacaoId = transacaoId;
         this.tipo = tipo;
@@ -43,7 +43,6 @@ public class Transaction {
         this.criptoCurrency = criptoCurrency;
     }
 
-    // Getters e Setters
 
     public UUID getTransacaoId() {
         return transacaoId;
