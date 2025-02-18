@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.UUID;
 
 public interface CriptoCurrencyRepository extends JpaRepository<CriptoCurrency, UUID> {
-    // Métodos CRUD já estão disponíveis a partir de JpaRepository
+   
 }
